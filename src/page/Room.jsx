@@ -34,12 +34,16 @@ const Room = () => {
             alert("Kamera ya microphone access nahi mil paya. Kripya permissions check karein.");
         }
     }, []);
-
+    
     useEffect(() => {
         if (myStream && localVideoRef.current && !localVideoRef.current.srcObject) {
             localVideoRef.current.srcObject = myStream;
         }
     }, [myStream]);
+
+ useEffect(()=>{
+    getUserMediaStream();
+ },[getUserMediaStream])
 
     useEffect(() => {
         if (remoteStream && remoteVideoRef.current) {
@@ -167,7 +171,11 @@ const Room = () => {
             setMessageInput("");
         }
     };
-
+    useEffect(() => {
+        if (myStream && remoteVideoRef.current) {
+            remoteVideoRef.current.srcObject = myStream;
+        }
+    }, [myStream]);
     return (
         <div className="container mx-auto p-4 z-[1] flex flex-wrap flex-col relative before:block before:absolute before:-inset-0 before:bg-black/10 before:z-[-1] h-svh">
             <h2 className="text-2xl font-bold mb-4">Live Streaming Room</h2>
@@ -259,6 +267,7 @@ const Room = () => {
                 >
                     Send
                 </button>
+                
             </div>
         </div>
     );
